@@ -27,7 +27,7 @@ Feature: Cluster Autoscaler Tests
     When I run oc create over "machine-autoscaler.yml" replacing paths:
       | ["metadata"]["name"]               | maotest                 |
       | ["spec"]["minReplicas"]            | 1                       |
-      | ["spec"]["maxReplicas"]            | 3                       |
+      | ["spec"]["maxReplicas"]            | 2                       |
       | ["spec"]["scaleTargetRef"]["name"] | <%= machine_set.name %> |
     Then the step should succeed
     And admin ensures "maotest" machineautoscaler is deleted after scenario
@@ -42,7 +42,7 @@ Feature: Cluster Autoscaler Tests
     # Verify machineset has scaled
     Given I wait up to 300 seconds for the steps to pass:
     """
-    Then the expression should be true> machine_set.desired_replicas(cached: false) == 3
+    Then the expression should be true> machine_set.desired_replicas(cached: false) == 2
     """
     Then the machineset should have expected number of running machines
 
