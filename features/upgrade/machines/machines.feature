@@ -113,6 +113,7 @@ Feature: Machine-api components upgrade tests
 
   @upgrade-prepare
   @admin
+  @cloud
   @destructive
   @disconnected @connected
   @4.13 @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
@@ -128,6 +129,7 @@ Feature: Machine-api components upgrade tests
   # @author jhou@redhat.com
   # @case_id OCP-22612
   @upgrade-check
+  @cloud-check
   @admin
   @destructive
   @4.13 @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
@@ -155,6 +157,7 @@ Feature: Machine-api components upgrade tests
 
   @upgrade-prepare
   @admin
+  @cloud
   @destructive
   @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
   @arm64 @amd64 @heterogeneous
@@ -204,6 +207,7 @@ Feature: Machine-api components upgrade tests
   # @author zhsun@redhat.com
   @upgrade-check
   @admin
+  @cloud-check	
   @destructive
   @4.13 @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
   @arm64 @amd64 @heterogeneous
@@ -244,9 +248,15 @@ Feature: Machine-api components upgrade tests
   @upgrade-prepare
   @destructive
   @admin
+<<<<<<< HEAD
   @4.13 @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
   @vsphere-ipi @openstack-ipi @nutanix-ipi @ibmcloud-ipi @gcp-ipi @azure-ipi @aws-ipi @alicloud-ipi
-  @upgrade
+=======
+  @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
+  @cloud
+>>>>>>> f860bb68 (4.11 Aug 02 latest with cloud and cloud-check tags)
+  @vsphere-ipi @openstack-ipi @gcp-ipi @azure-ipi @aws-ipi
+  @upgrade @cloud
   @network-ovnkubernetes @network-openshiftsdn
   @proxy @noproxy @disconnected @connected
   @heterogeneous @arm64 @amd64
@@ -266,10 +276,16 @@ Feature: Machine-api components upgrade tests
   # @author jhou@redhat.com
   # @case_id OCP-30783
   @upgrade-check
+  @cloud-check
   @admin
-  @destructive
+<<<<<<< HEAD
   @4.13 @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
+=======
+  @cloud-check  @destructive
+  @4.12 @4.11 @4.10 @4.9 @4.8 @4.7 @4.6
+>>>>>>> f860bb68 (4.11 Aug 02 latest with cloud and cloud-check tags)
   @vsphere-ipi @openstack-ipi @nutanix-ipi @ibmcloud-ipi @gcp-ipi @azure-ipi @aws-ipi @alicloud-ipi
+  @cloud-check  @destructive
   @upgrade
   @network-ovnkubernetes @network-openshiftsdn
   @proxy @noproxy @disconnected @connected
