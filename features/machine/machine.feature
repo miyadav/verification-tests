@@ -386,19 +386,21 @@ Feature: Machine features testing
     And evaluation of `machine_set_machine_openshift_io(cb.machineset).aws_machineset_availability_zone` is stored in the :default_availability_zone clipboard
     And evaluation of `machine_set_machine_openshift_io(cb.machineset).aws_machineset_iamInstanceProfile` is stored in the :default_iamInstanceProfile clipboard
     And evaluation of `machine_set_machine_openshift_io(cb.machineset).aws_machineset_subnet` is stored in the :default_subnet clipboard
+    And evaluation of `machine_set_machine_openshift_io(cb.machineset).aws_machineset_secgrp` is stored in the :default_secgrp clipboard
     Then admin ensures "<name>" machine_set_machine_openshift_io is deleted after scenario
 
     Given I obtain test data file "cloud/ms-aws/<file_name>"
     When I run oc create over "<file_name>" replacing paths:
-      | ["spec"]["selector"]["matchLabels"]["machine.openshift.io/cluster-api-cluster"]           | <%= infrastructure("cluster").infra_name %> |
-      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["iamInstanceProfile"]["id"]         | <%= cb.default_iamInstanceProfile %>        |
-      | ["spec"]["selector"]["matchLabels"]["machine.openshift.io/cluster-api-machineset"]        | <name>                                      |
-      | ["spec"]["template"]["metadata"]["labels"]["machine.openshift.io/cluster-api-cluster"]    | <%= infrastructure("cluster").infra_name %> |
-      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["ami"]["id"]                        | <%= cb.default_ami_id %>                    |
-      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["placement"]["availabilityZone"]    | <%= cb.default_availability_zone %>         |
-      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["subnet"]["filters"][0]["values"]   |  <%= cb.default_subnet[0].values[1] %>      |
-      | ["spec"]["template"]["metadata"]["labels"]["machine.openshift.io/cluster-api-machineset"] | <name>                                      |
-      | ["metadata"]["name"]                                                                      | <name>                                      |
+      | ["spec"]["selector"]["matchLabels"]["machine.openshift.io/cluster-api-cluster"]                    | <%= infrastructure("cluster").infra_name %>                    |
+      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["iamInstanceProfile"]["id"]                  | <%= cb.default_iamInstanceProfile %>                           |
+      | ["spec"]["selector"]["matchLabels"]["machine.openshift.io/cluster-api-machineset"]                 | <name>                                                         |
+      | ["spec"]["template"]["metadata"]["labels"]["machine.openshift.io/cluster-api-cluster"]             | <%= infrastructure("cluster").infra_name %>                    |
+      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["ami"]["id"]                                 | <%= cb.default_ami_id %>                                       |
+      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["securityGroups"][0]["filters"][0]["values"] | <%= cb.default_secgrp[0].values[0].to_s.split(",")[1][11..-1]%>|
+      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["placement"]["availabilityZone"]             | <%= cb.default_availability_zone %>                            |
+      | ["spec"]["template"]["spec"]["providerSpec"]["value"]["subnet"]["filters"][0]["values"]            | <%= cb.default_subnet[0].values[1] %>                          |
+      | ["spec"]["template"]["metadata"]["labels"]["machine.openshift.io/cluster-api-machineset"]          | <name>                                                         |
+      | ["metadata"]["name"]                                                                               | <name>                                                         |
     Then the step should succeed
 
     Then I store the last provisioned machine in the :machine_latest clipboard
@@ -412,7 +414,8 @@ Feature: Machine features testing
       | name     | <%= cb.machine_latest %>      |
     Then the step should succeed
     And the output should contain:
-      | <Validation> |
+      | <Validation>   |
+      | <Validation-2> |
 
     @aws-ipi
     @noproxy @disconnected @connected
@@ -420,10 +423,10 @@ Feature: Machine features testing
     @heterogeneous @arm64 @amd64
     
     Examples:
-      | case_id                         | name                    | file_name                 | Validation                    |
-      | OCP-32269:ClusterInfrastructure | default-valued-32269    | ms_default_values.yaml    | Placement                     | # @case_id OCP-32269
-      | OCP-37132:ClusterInfrastructure | tenancy-dedicated-37132 | ms_tenancy_dedicated.yaml | Tenancy:            dedicated | # @case_id OCP-37132
-      | OCP-42346:ClusterInfrastructure | default-valued-42346    | ms_default_values.yaml    | Instance Type:  m5.large      | # @case_id OCP-42346
+      | case_id                         | name                    | file_name                 | Validation                   | Validation-2                 |
+      | OCP-32269:ClusterInfrastructure | default-valued-32269    | ms_default_values.yaml    | Placement                    | Placement                    | # @case_id OCP-32269
+      | OCP-37132:ClusterInfrastructure | tenancy-dedicated-37132 | ms_tenancy_dedicated.yaml | Tenancy:            dedicated| Tenancy:            dedicated| # @case_id OCP-37132
+      | OCP-42346:ClusterInfrastructure | default-valued-42346    | ms_default_values.yaml    | Instance Type: m6g.large     | Instance Type: m5.large      | # @case_id OCP-42346
 
   # @author miyadav@redhat.com
   # @case_id OCP-33056
